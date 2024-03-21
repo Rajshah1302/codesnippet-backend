@@ -12,7 +12,7 @@ app.use(formSubmissionsRouter);
 // Set Access-Control-Allow-Origin header for the root route
 app.get("/", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*"); // Allow access from any origin
-  res.send("hi");
+  res.send("hello world");
 });
 
 app.listen(6000, () => {
