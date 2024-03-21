@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const FormSubmission = require("../models/FormSubmission");
 const axios = require("axios");
+const { getLanguageId } = require("../utils/LanguageUtil");
 
 // Route to create a new form submission
 router.post("/api/form-submissions", async (req, res) => {
@@ -17,6 +18,7 @@ router.post("/api/form-submissions", async (req, res) => {
       stdin,
       sourceCode,
     });
+    const language_id = getLanguageId(language)
 
     const response = await fetch(
       "https://judge0-ce.p.rapidapi.com/submissions",
@@ -31,7 +33,7 @@ router.post("/api/form-submissions", async (req, res) => {
         body: JSON.stringify({
           source_code: sourceCode,
           stdin: stdin,
-          language_id: 50,
+          language_id: language_id,
         }),
       }
     );
