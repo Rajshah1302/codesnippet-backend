@@ -4,21 +4,28 @@ const FormSubmission = require("../models/FormSubmission");
 const axios = require("axios");
 const { getLanguageId } = require("../utils/LanguageUtil");
 
+// Set CORS headers for all routes
+router.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // Allow access from any origin
+  res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS"); // Allow specified HTTP methods
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Allow specified headers
+  next(); // Move to the next middleware
+});
+
 // Route to create a new form submission
 router.post("/api/form-submissions", async (req, res) => {
   const { username, language, stdin, sourceCode } = req.body;
-  let output; // Declare the output variable outside the try block
-  let newFormSubmission; // Declare newFormSubmission variable outside the try block
+  let output;
+  let newFormSubmission;
 
   try {
-    // Create a new form submission in the database
     newFormSubmission = await FormSubmission.create({
       username,
       language,
       stdin,
       sourceCode,
     });
-    const language_id = getLanguageId(language)
+    const language_id = getLanguageId(language);
 
     const response = await fetch(
       "https://judge0-ce.p.rapidapi.com/submissions",
@@ -37,7 +44,7 @@ router.post("/api/form-submissions", async (req, res) => {
         }),
       }
     );
-    
+
     const jsonResponse = await response.json();
     let jsonGetSolution = {
       status: { description: "Queue" },
@@ -72,22 +79,17 @@ router.post("/api/form-submissions", async (req, res) => {
   } catch (error) {
     console.error("Error processing form submission:", error);
     res.status(500).json({ error: "Internal server error" });
-    return; // Add return statement to exit function on error
+    return;
   }
 
   try {
-    // Update the form submission record in the database with the output
     await FormSubmission.update({ output }, { where: { id: newFormSubmission.id } });
-
-    // Send a success response to the client
     res.status(200).json({ message: "Form submission successful", submissionId: newFormSubmission.id });
   } catch (error) {
     console.error("Error updating form submission:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
 
 // Route to get all form submissions
 router.get("/api/form-submissions", async (req, res) => {

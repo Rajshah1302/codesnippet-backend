@@ -9,10 +9,12 @@ app.use(express.json());
 // Mount the formSubmissionsRouter on '/api/form-submissions'
 app.use(formSubmissionsRouter);
 
-app.listen(6000, () => {
-  console.log("Server is running on port 3000");
+// Set Access-Control-Allow-Origin header for the root route
+app.get("/", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*"); // Allow access from any origin
+  res.send("hi");
 });
 
-app.get("/", (req, res) => {
-  res.send("hi");
+app.listen(6000, () => {
+  console.log("Server is running on port 6000");
 });
