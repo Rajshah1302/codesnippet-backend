@@ -1,5 +1,3 @@
-// models/FormSubmission.js
-
 require('dotenv').config(); // Load environment variables from .env file
 const { Sequelize, DataTypes } = require('sequelize');
 
@@ -24,6 +22,10 @@ const FormSubmission = sequelize.define('FormSubmission', {
   sourceCode: {
     type: DataTypes.TEXT,
     allowNull: false
+  },
+  output: { // Add a new field for storing the output
+    type: DataTypes.TEXT,
+    allowNull: true // Change to false if output is always expected
   }
 });
 
