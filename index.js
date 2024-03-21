@@ -3,7 +3,13 @@ const formSubmissionsRouter = require('./routes/formSubmissions');
 const cors = require('cors'); // Import the cors middleware
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://deploy-mern-1whq.vercel.app"],
+    methods: ["POST", "GET"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Mount the formSubmissionsRouter on '/api/form-submissions'
