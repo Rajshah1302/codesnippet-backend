@@ -26,7 +26,7 @@ router.post("/api/form-submissions", async (req, res) => {
         method: "POST",
         headers: {
           "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-          'X-RapidAPI-Key': '964bdea047msh5630981746e3301p15de24jsn10c953a6090c',
+          'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
           "content-type": "application/json",
           accept: "application/json",
         },
@@ -55,7 +55,7 @@ router.post("/api/form-submissions", async (req, res) => {
           method: "GET",
           headers: {
             "x-rapidapi-host": "judge0-ce.p.rapidapi.com",
-            'X-RapidAPI-Key': '964bdea047msh5630981746e3301p15de24jsn10c953a6090c',
+            'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
             "content-type": "application/json",
           },
         });
